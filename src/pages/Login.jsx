@@ -1,121 +1,92 @@
-import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Typography,
-  TextField,
-  Button,
-  Box,
-  Alert,
-  Paper,
-} from "@mui/material";
-import { loginUser } from "../api/api";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Alert, Box, Button, Divider, Link as MuiLink, Stack, TextField, Typography } from "@mui/material";
+import BoltIcon from "@mui/icons-material/Bolt";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import AuthLayout from "../components/AuthLayout";
+import PasswordField from "../components/PasswordField";
+import PageMeta from "../components/PageMeta";
+import { useDemoLogin } from "../hooks/useDemoLogin";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const { signIn } = useAuth();
   const navigate = useNavigate();
-  const { user, login } = useAuth();
-
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
+  const location = useLocation();
+  const { loginAsDemo, loading: demoLoading } = useDemoLogin();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    if (!form.email || !form.password) {
+      setError("Please enter your email and password.");
+      return;
+    }
 
+    setSubmitting(true);
     try {
-      const data = await loginUser(form);
-      login(data.user, data.accessToken);
-      navigate("/");
-    } catch (err) {
+      await signIn(form.email.trim(), form.password);
+      const from = location.state?.from;
+      navigate(from ? from.pathname + (from.search ?? "") : "/explore", { replace: true });
+    } catch {
       setError("Invalid email or password.");
+      setSubmitting(false);
     }
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(to bottom right, #E8D8C4, #C7B7A3)",
-        p: 2,
-      }}
-    >
-      <Paper
-        elevation={6}
-        sx={{
-          maxWidth: 400,
-          width: "100%",
-          p: 4,
-          borderRadius: 3,
-          backgroundColor: "#F9F4ED",
-        }}
-      >
-        <Typography
-          variant="h4"
-          align="center"
-          gutterBottom
-          sx={{ color: "#561C24", fontWeight: "bold" }}
-        >
-          Login
-        </Typography>
-
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
-
-        <Box component="form" onSubmit={handleSubmit} noValidate>
+    <AuthLayout title="Welcome back" subtitle="Log in to keep the conversation going.">
+      <PageMeta title="Log in" />
+      <Box component="form" onSubmit={handleSubmit} noValidate>
+        <Stack spacing={2}>
+          {error && <Alert severity="error">{error}</Alert>}
           <TextField
-            fullWidth
             label="Email"
             name="email"
+            type="email"
+            autoComplete="email"
             value={form.email}
             onChange={handleChange}
-            margin="normal"
-            required
-            InputLabelProps={{ style: { color: "#6D2932" } }}
-          />
-          <TextField
             fullWidth
+            autoFocus
+          />
+          <PasswordField
             label="Password"
             name="password"
-            type="password"
+            autoComplete="current-password"
             value={form.password}
             onChange={handleChange}
-            margin="normal"
-            required
-            InputLabelProps={{ style: { color: "#6D2932" } }}
-          />
-          <Button
-            type="submit"
-            variant="contained"
             fullWidth
-            sx={{
-              mt: 2,
-              backgroundColor: "#6D2932",
-              color: "#fff",
-              fontWeight: "bold",
-              "&:hover": { backgroundColor: "#561C24" },
-            }}
-          >
-            Login
+          />
+          <Button type="submit" variant="contained" size="large" fullWidth disabled={submitting}>
+            {submitting ? "Logging in…" : "Log in"}
           </Button>
-        </Box>
-      </Paper>
-    </Box>
+          <Divider sx={{ color: "text.secondary", fontSize: 13 }}>or</Divider>
+          <Button
+            variant="outlined"
+            size="large"
+            fullWidth
+            startIcon={<BoltIcon />}
+            onClick={loginAsDemo}
+            disabled={demoLoading}
+          >
+            {demoLoading ? "Brewing…" : "Continue with the demo account"}
+          </Button>
+          <Typography variant="body2" textAlign="center" color="text.secondary">
+            New here?{" "}
+            <MuiLink component={Link} to="/register" fontWeight={600}>
+              Create an account
+            </MuiLink>
+          </Typography>
+        </Stack>
+      </Box>
+    </AuthLayout>
   );
 }
 

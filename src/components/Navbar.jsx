@@ -1,119 +1,146 @@
+import { useState } from "react";
 import {
   AppBar,
   Toolbar,
   Typography,
   Button,
   Avatar,
-  Stack,
-  Slide,
-  useScrollTrigger,
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Tooltip,
+  Box,
 } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import DarkModeIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeIcon from "@mui/icons-material/LightModeOutlined";
+import PersonIcon from "@mui/icons-material/PersonOutline";
+import DashboardIcon from "@mui/icons-material/SpaceDashboardOutlined";
+import BookmarkIcon from "@mui/icons-material/BookmarkBorder";
+import SettingsIcon from "@mui/icons-material/SettingsOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useColorMode } from "../context/ColorModeContext";
+import Logo from "./Logo";
+import { brand } from "../theme";
 
-// Animation on scroll (optional fade-in slide)
-function HideOnScroll({ children }) {
-  const trigger = useScrollTrigger();
-  return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      {children}
-    </Slide>
-  );
-}
-
-function Navbar() {
-  const { user, logout } = useAuth();
+function Navbar({ onMenuClick }) {
+  const { user, signOut } = useAuth();
+  const { mode, toggleColorMode } = useColorMode();
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const closeMenu = () => setAnchorEl(null);
 
   const handleLogout = () => {
-    logout();
-    navigate("/login");
+    closeMenu();
+    signOut();
+    navigate("/");
   };
 
   return (
-    <HideOnScroll>
-      <AppBar
-        position="sticky"
-        sx={{
-          backgroundColor: "#561C24", 
-          boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
-          transition: "all 0.3s ease-in-out",
-        }}
-      >
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            <Link
-              to="/"
-              style={{
-                textDecoration: "none",
-                color: "#E8D8C4", 
-                fontWeight: "bold",
-              }}
-            >
-              Latte Talks
-            </Link>
-          </Typography>
+    <AppBar
+      position="fixed"
+      elevation={0}
+      sx={{
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        bgcolor: brand.espresso,
+        color: brand.sand,
+      }}
+    >
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          edge="start"
+          onClick={onMenuClick}
+          aria-label="Open navigation"
+          sx={{ mr: 1, display: { md: "none" } }}
+        >
+          <MenuIcon />
+        </IconButton>
 
-          {user ? (
-            <>
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                sx={{ mr: 2 }}
+        <Box sx={{ flexGrow: 1, display: "flex" }}>
+          <Logo to={user ? "/explore" : "/"} />
+        </Box>
+
+        <Tooltip title={mode === "dark" ? "Light mode" : "Dark mode"}>
+          <IconButton color="inherit" onClick={toggleColorMode} aria-label="Toggle color mode">
+            {mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
+          </IconButton>
+        </Tooltip>
+
+        {user ? (
+          <>
+            <IconButton
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+              aria-label="Account menu"
+              sx={{ ml: 1, p: 0.5 }}
+            >
+              <Avatar
+                src={user.avatar_url}
+                alt={user.name}
+                sx={{ width: 36, height: 36, border: `2px solid ${brand.clay}`, bgcolor: brand.terracotta, color: "#fff" }}
               >
-                <Avatar
-                  src={user.profileImage}
-                  alt={user.name}
-                  sx={{ border: "2px solid #C7B7A3" }}
-                />
-                <Typography sx={{ color: "#E8D8C4", fontWeight: "bold" }}>
-                  {user.name}
+                {user.name?.[0]?.toUpperCase()}
+              </Avatar>
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={closeMenu}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+              <Box sx={{ px: 2, py: 1 }}>
+                <Typography fontWeight={700}>{user.name}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {user.email}
                 </Typography>
-              </Stack>
-              <Button
-                onClick={handleLogout}
-                sx={{
-                  color: "#E8D8C4",
-                  "&:hover": {
-                    backgroundColor: "#6D2932", 
-                  },
-                }}
-              >
+              </Box>
+              {[
+                { label: "Your profile", to: `/u/${user.id}`, icon: <PersonIcon fontSize="small" /> },
+                { label: "My posts", to: "/dashboard", icon: <DashboardIcon fontSize="small" /> },
+                { label: "Bookmarks", to: "/bookmarks", icon: <BookmarkIcon fontSize="small" /> },
+                { label: "Settings", to: "/settings", icon: <SettingsIcon fontSize="small" /> },
+              ].map((item) => (
+                <MenuItem
+                  key={item.to}
+                  onClick={() => {
+                    closeMenu();
+                    navigate(item.to);
+                  }}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  {item.label}
+                </MenuItem>
+              ))}
+              <MenuItem onClick={handleLogout}>
+                <ListItemIcon>
+                  <LogoutIcon fontSize="small" />
+                </ListItemIcon>
                 Logout
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button
-                component={Link}
-                to="/login"
-                sx={{
-                  color: "#E8D8C4",
-                  "&:hover": {
-                    backgroundColor: "#6D2932",
-                  },
-                }}
-              >
-                Login
-              </Button>
-              <Button
-                component={Link}
-                to="/register"
-                sx={{
-                  color: "#E8D8C4",
-                  "&:hover": {
-                    backgroundColor: "#6D2932",
-                  },
-                }}
-              >
-                Register
-              </Button>
-            </>
-          )}
-        </Toolbar>
-      </AppBar>
-    </HideOnScroll>
+              </MenuItem>
+            </Menu>
+          </>
+        ) : (
+          <Box sx={{ display: "flex", gap: 1, ml: 1 }}>
+            <Button component={Link} to="/login" color="inherit">
+              Login
+            </Button>
+            <Button
+              component={Link}
+              to="/register"
+              variant="contained"
+              sx={{ bgcolor: brand.terracotta, color: "#fff", "&:hover": { bgcolor: "#963A26" } }}
+            >
+              Sign up
+            </Button>
+          </Box>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 }
 
