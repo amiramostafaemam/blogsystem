@@ -4,4 +4,4 @@ export const DEMO_ACCOUNT = {
   password: "crema-demo",
 };
 
-export const GITHUB_URL = "https://github.com/amiramostafaemam/blogsystem";
+export const GITHUB_URL = "https://github.com/amiramostafaemam/crema";
