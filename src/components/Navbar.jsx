@@ -19,11 +19,13 @@ import PersonIcon from "@mui/icons-material/PersonOutline";
 import DashboardIcon from "@mui/icons-material/SpaceDashboardOutlined";
 import BookmarkIcon from "@mui/icons-material/BookmarkBorder";
 import SettingsIcon from "@mui/icons-material/SettingsOutlined";
+import InsightsIcon from "@mui/icons-material/InsightsOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useColorMode } from "../context/ColorModeContext";
 import Logo from "./Logo";
+import NotificationBell from "./NotificationBell";
 import { brand } from "../theme";
 
 function Navbar({ onMenuClick }) {
@@ -73,6 +75,7 @@ function Navbar({ onMenuClick }) {
 
         {user ? (
           <>
+            <NotificationBell />
             <IconButton
               onClick={(e) => setAnchorEl(e.currentTarget)}
               aria-label="Account menu"
@@ -102,6 +105,7 @@ function Navbar({ onMenuClick }) {
               {[
                 { label: "Your profile", to: `/u/${user.id}`, icon: <PersonIcon fontSize="small" /> },
                 { label: "My posts", to: "/dashboard", icon: <DashboardIcon fontSize="small" /> },
+                { label: "Stats", to: "/stats", icon: <InsightsIcon fontSize="small" /> },
                 { label: "Bookmarks", to: "/bookmarks", icon: <BookmarkIcon fontSize="small" /> },
                 { label: "Settings", to: "/settings", icon: <SettingsIcon fontSize="small" /> },
               ].map((item) => (

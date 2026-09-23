@@ -14,6 +14,7 @@ const Register = lazy(() => import("./pages/Register"));
 const WritePost = lazy(() => import("./pages/WritePost"));
 const EditPost = lazy(() => import("./pages/EditPost"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Stats = lazy(() => import("./pages/Stats"));
 const Bookmarks = lazy(() => import("./pages/Bookmarks"));
 const Settings = lazy(() => import("./pages/Settings"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -42,6 +43,7 @@ function App() {
             <Route path="/write" element={<WritePost />} />
             <Route path="/edit/:id" element={<EditPost />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/stats" element={<Stats />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
             <Route path="/settings" element={<Settings />} />
           </Route>

@@ -45,8 +45,8 @@ export async function listBookmarkedPosts(userId) {
          post:posts (
            id, title, content, image, tags, status, created_at, user_id,
            author:profiles!posts_user_id_fkey (id, name, avatar_url),
-           likes (count),
-           comments (count)
+           likes!likes_post_id_fkey (count),
+           comments!comments_post_id_fkey (count)
          )`
       )
       .eq("user_id", userId)

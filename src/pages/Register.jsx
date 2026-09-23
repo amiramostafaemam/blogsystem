@@ -16,6 +16,7 @@ import { updateProfile, uploadImage } from "../api/profiles";
 import AuthLayout from "../components/AuthLayout";
 import PasswordField from "../components/PasswordField";
 import PageMeta from "../components/PageMeta";
+import SocialLogin from "../components/SocialLogin";
 import { resizeImage } from "../utils";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -104,6 +105,7 @@ function Register() {
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Stack spacing={2}>
           {serverError && <Alert severity="error">{serverError}</Alert>}
+          <SocialLogin />
 
           <Stack direction="row" spacing={2} alignItems="center">
             <Avatar src={avatar?.preview} sx={{ width: 64, height: 64 }}>
