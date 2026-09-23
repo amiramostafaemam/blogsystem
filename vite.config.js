@@ -1,10 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// Big libraries get their own long-cached chunks
+// Supabase gets its own long-cached chunk. React and MUI stay together:
+// splitting them apart creates a circular import that crashes at startup.
 const VENDOR_CHUNKS = {
-  react: ["react", "react-dom", "react-router", "scheduler"],
-  mui: ["@mui", "@emotion"],
   supabase: ["@supabase"],
 };
 
@@ -12,6 +11,8 @@ const VENDOR_CHUNKS = {
 export default defineConfig({
   plugins: [react()],
   build: {
+    // React + MUI in one entry chunk is ~520 kB (~165 kB gzipped); pages are lazy-loaded
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
         manualChunks(id) {
