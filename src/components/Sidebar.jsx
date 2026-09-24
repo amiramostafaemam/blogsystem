@@ -1,13 +1,25 @@
 import { useEffect, useState } from "react";
-import { Box, Typography, List, ListItemButton, ListItemIcon, ListItemText, Button, Chip, Stack } from "@mui/material";
+import {
+  Box,
+  Typography,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Button,
+  Chip,
+  Divider,
+  IconButton,
+  Stack,
+  Tooltip,
+} from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import ExploreIcon from "@mui/icons-material/ExploreOutlined";
 import BookmarkIcon from "@mui/icons-material/BookmarkBorder";
 import DashboardIcon from "@mui/icons-material/SpaceDashboardOutlined";
-import PersonIcon from "@mui/icons-material/PersonOutline";
-import SettingsIcon from "@mui/icons-material/SettingsOutlined";
 import InsightsIcon from "@mui/icons-material/InsightsOutlined";
 import EditIcon from "@mui/icons-material/EditOutlined";
+import PersonAddIcon from "@mui/icons-material/PersonAddAlt1Outlined";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getPopularTags } from "../api/posts";
@@ -17,8 +29,11 @@ import { GITHUB_URL } from "../config";
 import { brand } from "../theme";
 
 export const SIDEBAR_WIDTH = 248;
+export const SIDEBAR_COLLAPSED_WIDTH = 76;
 
-function SectionLabel({ children }) {
+function SectionLabel({ children, collapsed, first = false }) {
+  // In the icon rail a thin divider separates groups; the first group needs none
+  if (collapsed) return first ? null : <Divider sx={{ mx: 1.5, my: 1.25 }} />;
   return (
     <Typography
       sx={{ px: 1.5, mb: 0.75, fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "text.secondary", opacity: 0.8 }}
@@ -28,25 +43,27 @@ function SectionLabel({ children }) {
   );
 }
 
-function NavItem({ item, active, onNavigate }) {
-  return (
+function NavItem({ item, active, collapsed, onNavigate }) {
+  const button = (
     <ListItemButton
       component={Link}
       to={item.to}
       onClick={onNavigate}
       aria-current={active ? "page" : undefined}
+      aria-label={collapsed ? item.label : undefined}
       sx={(theme) => ({
         position: "relative",
         borderRadius: 2.5,
         py: 0.75,
         mb: 0.25,
+        justifyContent: collapsed ? "center" : "flex-start",
         color: active ? "primary.main" : "text.primary",
         bgcolor: active ? alpha(theme.palette.primary.main, 0.1) : "transparent",
         "&:hover": { bgcolor: active ? alpha(theme.palette.primary.main, 0.14) : "action.hover" },
         "&::before": {
           content: '""',
           position: "absolute",
-          left: -8,
+          left: collapsed ? -12 : -8,
           top: 8,
           bottom: 8,
           width: 3,
@@ -57,9 +74,19 @@ function NavItem({ item, active, onNavigate }) {
         },
       })}
     >
-      <ListItemIcon sx={{ minWidth: 36, color: "inherit", "& svg": { fontSize: 21 } }}>{item.icon}</ListItemIcon>
-      <ListItemText primary={item.label} slotProps={{ primary: { fontWeight: active ? 700 : 500, fontSize: 15 } }} />
+      <ListItemIcon sx={{ minWidth: collapsed ? 0 : 36, color: "inherit", "& svg": { fontSize: 22 } }}>{item.icon}</ListItemIcon>
+      {!collapsed && (
+        <ListItemText primary={item.label} slotProps={{ primary: { fontWeight: active ? 700 : 500, fontSize: 15, noWrap: true } }} />
+      )}
     </ListItemButton>
+  );
+
+  return collapsed ? (
+    <Tooltip title={item.label} placement="right" arrow>
+      {button}
+    </Tooltip>
+  ) : (
+    button
   );
 }
 
@@ -98,7 +125,22 @@ function PopularTags({ onNavigate }) {
 }
 
 // Warm call-to-action for signed-out readers
-function JoinCard({ onNavigate }) {
+function JoinCard({ collapsed, onNavigate }) {
+  if (collapsed) {
+    return (
+      <Tooltip title="Create free account" placement="right" arrow>
+        <IconButton
+          component={Link}
+          to="/register"
+          aria-label="Create free account"
+          sx={{ mx: "auto", mb: 2, bgcolor: "primary.main", color: "primary.contrastText", "&:hover": { bgcolor: "primary.dark" } }}
+        >
+          <PersonAddIcon />
+        </IconButton>
+      </Tooltip>
+    );
+  }
+
   return (
     <SpotlightCard
       spotlightColor={alpha(brand.clay, 0.35)}
@@ -135,7 +177,8 @@ function JoinCard({ onNavigate }) {
   );
 }
 
-function Sidebar({ onNavigate }) {
+// Navigation only: account things (profile, settings, log out) live in the avatar menu
+function Sidebar({ collapsed = false, onNavigate }) {
   const { user } = useAuth();
   const { pathname } = useLocation();
 
@@ -145,14 +188,22 @@ function Sidebar({ onNavigate }) {
         { label: "My posts", to: "/dashboard", icon: <DashboardIcon /> },
         { label: "Stats", to: "/stats", icon: <InsightsIcon /> },
         { label: "Bookmarks", to: "/bookmarks", icon: <BookmarkIcon /> },
-        { label: "Profile", to: `/u/${user.id}`, icon: <PersonIcon /> },
-        { label: "Settings", to: "/settings", icon: <SettingsIcon /> },
       ]
     : [];
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "100%", px: 2, py: 2.5, overflowY: "auto" }}>
-      {!user && <JoinCard onNavigate={onNavigate} />}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        px: collapsed ? 1.5 : 2,
+        py: 2.5,
+        overflowY: "auto",
+        overflowX: "hidden",
+      }}
+    >
+      {!user && <JoinCard collapsed={collapsed} onNavigate={onNavigate} />}
 
       {user && (
         <Button
@@ -167,38 +218,46 @@ function Sidebar({ onNavigate }) {
         </Button>
       )}
 
-      <SectionLabel>Discover</SectionLabel>
-      <List disablePadding sx={{ mb: 2.5 }}>
+      <SectionLabel collapsed={collapsed} first>
+        Discover
+      </SectionLabel>
+      <List disablePadding sx={{ mb: collapsed ? 0 : 2.5 }}>
         {discover.map((item) => (
-          <NavItem key={item.to} item={item} active={pathname === item.to} onNavigate={onNavigate} />
+          <NavItem key={item.to} item={item} active={pathname === item.to} collapsed={collapsed} onNavigate={onNavigate} />
         ))}
       </List>
 
       {mine.length > 0 && (
         <>
-          <SectionLabel>Your space</SectionLabel>
+          <SectionLabel collapsed={collapsed}>Your space</SectionLabel>
           <List disablePadding>
             {mine.map((item) => (
-              <NavItem key={item.to} item={item} active={pathname === item.to} onNavigate={onNavigate} />
+              <NavItem key={item.to} item={item} active={pathname === item.to} collapsed={collapsed} onNavigate={onNavigate} />
             ))}
           </List>
         </>
       )}
 
       {/* Explore already shows topics in its header */}
-      {pathname !== "/explore" && <PopularTags onNavigate={onNavigate} />}
+      {!collapsed && pathname !== "/explore" && <PopularTags onNavigate={onNavigate} />}
 
-      <Stack direction="row" spacing={1.5} sx={{ mt: "auto", pt: 3, px: 1.5, "& a": { color: "text.secondary", fontSize: 12, textDecoration: "none", "&:hover": { color: "text.primary" } } }}>
-        <Link to="/privacy" onClick={onNavigate}>
-          Privacy
-        </Link>
-        <a href={GITHUB_URL} target="_blank" rel="noreferrer">
-          GitHub
-        </a>
-        <Typography component="span" sx={{ fontSize: 12, color: "text.secondary" }}>
-          © {new Date().getFullYear()} Crema
-        </Typography>
-      </Stack>
+      {!collapsed && (
+        <Stack
+          direction="row"
+          spacing={1.5}
+          sx={{ mt: "auto", pt: 3, px: 1.5, "& a": { color: "text.secondary", fontSize: 12, textDecoration: "none", "&:hover": { color: "text.primary" } } }}
+        >
+          <Link to="/privacy" onClick={onNavigate}>
+            Privacy
+          </Link>
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          <Typography component="span" sx={{ fontSize: 12, color: "text.secondary" }}>
+            © {new Date().getFullYear()} Crema
+          </Typography>
+        </Stack>
+      )}
     </Box>
   );
 }

@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Alert, Box, Button, Divider, Link as MuiLink, Stack, TextField, Typography } from "@mui/material";
-import BoltIcon from "@mui/icons-material/Bolt";
+import { Alert, Box, Button, Link as MuiLink, Stack, TextField, Typography } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import AuthLayout from "../components/AuthLayout";
 import PasswordField from "../components/PasswordField";
 import PageMeta from "../components/PageMeta";
 import SocialLogin from "../components/SocialLogin";
-import { useDemoLogin } from "../hooks/useDemoLogin";
+import DemoBanner from "../components/DemoBanner";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -16,7 +15,6 @@ function Login() {
   const { signIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { loginAsDemo, loading: demoLoading } = useDemoLogin();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -46,8 +44,8 @@ function Login() {
       <PageMeta title="Log in" />
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Stack spacing={2}>
+          <DemoBanner />
           {error && <Alert severity="error">{error}</Alert>}
-          <SocialLogin redirectTo={location.state?.from?.pathname ?? "/explore"} />
           <TextField
             label="Email"
             name="email"
@@ -69,17 +67,7 @@ function Login() {
           <Button type="submit" variant="contained" size="large" fullWidth disabled={submitting}>
             {submitting ? "Logging in…" : "Log in"}
           </Button>
-          <Divider sx={{ color: "text.secondary", fontSize: 13 }}>or</Divider>
-          <Button
-            variant="outlined"
-            size="large"
-            fullWidth
-            startIcon={<BoltIcon />}
-            onClick={loginAsDemo}
-            disabled={demoLoading}
-          >
-            {demoLoading ? "Brewing…" : "Continue with the demo account"}
-          </Button>
+          <SocialLogin redirectTo={location.state?.from?.pathname ?? "/explore"} />
           <Typography variant="body2" textAlign="center" color="text.secondary">
             New here?{" "}
             <MuiLink component={Link} to="/register" fontWeight={600}>

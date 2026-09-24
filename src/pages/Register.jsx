@@ -17,6 +17,7 @@ import AuthLayout from "../components/AuthLayout";
 import PasswordField from "../components/PasswordField";
 import PageMeta from "../components/PageMeta";
 import SocialLogin from "../components/SocialLogin";
+import DemoBanner from "../components/DemoBanner";
 import { resizeImage } from "../utils";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -104,8 +105,8 @@ function Register() {
       <PageMeta title="Sign up" />
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Stack spacing={2}>
+          <DemoBanner />
           {serverError && <Alert severity="error">{serverError}</Alert>}
-          <SocialLogin />
 
           <Stack direction="row" spacing={2} alignItems="center">
             <Avatar src={avatar?.preview} sx={{ width: 64, height: 64 }}>
@@ -125,6 +126,7 @@ function Register() {
           <Button type="submit" variant="contained" size="large" fullWidth disabled={submitting}>
             {submitting ? "Creating account…" : "Sign up"}
           </Button>
+          <SocialLogin />
           <Typography variant="body2" textAlign="center" color="text.secondary">
             Already have an account?{" "}
             <MuiLink component={Link} to="/login" fontWeight={600}>
