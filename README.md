@@ -44,6 +44,7 @@
 | Backend | Supabase (Postgres, Auth, Storage, Realtime, RLS) |
 | Tooling | Vite 6, ESLint, Vitest, Testing Library, GitHub Actions |
 | Hosting | Vercel |
+| Motion & effects | [React Bits](https://reactbits.dev) (BlurText, SpotlightCard, FuzzyText), Motion |
 
 ## Getting started
 
@@ -100,3 +101,7 @@ src/
 supabase/       # SQL migrations
 scripts/        # demo seed script
 ```
+
+## Credits
+
+Text and card effects adapted from [React Bits](https://reactbits.dev) by David Haz (MIT + Commons Clause, see [`src/components/reactbits/LICENSE.md`](src/components/reactbits/LICENSE.md)). Photos from [Unsplash](https://unsplash.com).

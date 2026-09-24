@@ -23,6 +23,8 @@ import { useAuth } from "../context/AuthContext";
 import { useNotify } from "../context/NotifyContext";
 import ConfirmDialog from "../components/ConfirmDialog";
 import PageMeta from "../components/PageMeta";
+import EmptyState from "../components/EmptyState";
+import { LogoMark } from "../components/Logo";
 import { formatDate, readingTime } from "../utils";
 
 function StatCard({ label, value }) {
@@ -68,7 +70,9 @@ function PostRow({ post, onDelete }) {
         {post.image ? (
           <Box component="img" src={post.image} alt="" loading="lazy" sx={{ width: "100%", height: "100%", objectFit: "cover" }} />
         ) : (
-          <Typography fontSize={24}>☕</Typography>
+          <Box sx={{ opacity: 0.5, "& svg": { display: "block" } }}>
+            <LogoMark size={28} />
+          </Box>
         )}
       </Box>
 
@@ -201,15 +205,16 @@ function Dashboard() {
       )}
 
       {posts && visible.length === 0 && (
-        <Box sx={{ textAlign: "center", py: 8 }}>
-          <Typography fontSize={40}>✍️</Typography>
-          <Typography color="text.secondary" mb={2}>
-            {tab === "draft" ? "No drafts. Every story starts as one!" : "Nothing here yet."}
-          </Typography>
-          <Button component={Link} to="/write" variant="outlined">
-            Start writing
-          </Button>
-        </Box>
+        <EmptyState
+          size={60}
+          title={tab === "draft" ? "No drafts" : "Nothing here yet"}
+          message={tab === "draft" ? "Every story starts as one." : "Your stories will show up here."}
+          action={
+            <Button component={Link} to="/write" variant="outlined" sx={{ borderRadius: 99 }}>
+              Start writing
+            </Button>
+          }
+        />
       )}
 
       <Stack spacing={1.5}>

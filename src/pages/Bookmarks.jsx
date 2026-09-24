@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNotify } from "../context/NotifyContext";
 import PostGrid, { PostGridSkeleton } from "../components/PostGrid";
 import PageMeta from "../components/PageMeta";
+import EmptyState from "../components/EmptyState";
 
 function Bookmarks() {
   const { user } = useAuth();
@@ -38,18 +39,15 @@ function Bookmarks() {
 
       {!posts && <PostGridSkeleton count={2} />}
       {posts?.length === 0 && (
-        <Box sx={{ textAlign: "center", py: 8 }}>
-          <Typography fontSize={40}>🔖</Typography>
-          <Typography variant="h6" gutterBottom>
-            No bookmarks yet
-          </Typography>
-          <Typography color="text.secondary" mb={3}>
-            Tap the bookmark icon on any story to save it here.
-          </Typography>
-          <Button component={Link} to="/explore" variant="contained">
-            Find something to read
-          </Button>
-        </Box>
+        <EmptyState
+          title="No bookmarks yet"
+          message="Tap the bookmark icon on any story to save it here."
+          action={
+            <Button component={Link} to="/explore" variant="contained" sx={{ borderRadius: 99 }}>
+              Find something to read
+            </Button>
+          }
+        />
       )}
       {posts?.length > 0 && <PostGrid posts={posts} />}
     </Box>

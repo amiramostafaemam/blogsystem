@@ -55,6 +55,14 @@ export function buildTheme(mode) {
       button: { textTransform: "none", fontWeight: 600 },
     },
     components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          // Hide scrollbars everywhere; scrolling still works with wheel, touch and keys
+          "*": { scrollbarWidth: "none" },
+          "*::-webkit-scrollbar": { width: 0, height: 0 },
+          "::selection": { backgroundColor: isDark ? "rgba(224,122,95,0.35)" : "rgba(181,71,47,0.2)" },
+        },
+      },
       MuiButton: {
         defaultProps: { disableElevation: true },
         styleOverrides: { root: { borderRadius: 10 } },
