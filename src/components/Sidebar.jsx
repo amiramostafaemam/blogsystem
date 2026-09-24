@@ -14,6 +14,7 @@ import BookmarkIcon from "@mui/icons-material/BookmarkBorder";
 import DashboardIcon from "@mui/icons-material/SpaceDashboardOutlined";
 import PersonIcon from "@mui/icons-material/PersonOutline";
 import SettingsIcon from "@mui/icons-material/SettingsOutlined";
+import InsightsIcon from "@mui/icons-material/InsightsOutlined";
 import EditIcon from "@mui/icons-material/EditOutlined";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -65,6 +66,7 @@ function Sidebar({ onNavigate }) {
     ...(user
       ? [
           { label: "My posts", to: "/dashboard", icon: <DashboardIcon /> },
+          { label: "Stats", to: "/stats", icon: <InsightsIcon /> },
           { label: "Bookmarks", to: "/bookmarks", icon: <BookmarkIcon /> },
           { label: "Profile", to: `/u/${user.id}`, icon: <PersonIcon /> },
           { label: "Settings", to: "/settings", icon: <SettingsIcon /> },

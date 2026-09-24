@@ -9,7 +9,7 @@ const COLUMNS = [
     title: "Read",
     links: [
       { label: "Explore stories", to: "/explore" },
-      { label: "Search", to: "/explore" },
+      { label: "Privacy policy", to: "/privacy" },
     ],
   },
   {

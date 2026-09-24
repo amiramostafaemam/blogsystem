@@ -22,6 +22,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { deletePost, getPost, listPosts } from "../api/posts";
 import { getProfile } from "../api/profiles";
+import { recordView } from "../api/stats";
 import { useAuth } from "../context/AuthContext";
 import { useNotify } from "../context/NotifyContext";
 import { usePostReactions } from "../hooks/usePostReactions";
@@ -33,6 +34,19 @@ import ReadingProgress from "../components/ReadingProgress";
 import PageMeta from "../components/PageMeta";
 import { LikeButton, BookmarkButton } from "../components/ReactionButtons";
 import { excerpt, formatDate, readingTime } from "../utils";
+
+// One view per story per browser tab session; the server also ignores the author
+function countViewOnce(post) {
+  if (post.status !== "published") return;
+  const key = `crema:viewed:${post.id}`;
+  try {
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, "1");
+  } catch {
+    // storage blocked: still count, the server rate-limits signed-in readers
+  }
+  recordView(post.id);
+}
 
 // Same tag first, then the author's other stories, then the latest
 async function loadRelated(post) {
@@ -72,6 +86,7 @@ function PostPage() {
         setPost(data);
         setCommentCount(data.commentCount);
         setStatus("ready");
+        countViewOnce(data);
         getProfile(data.user_id).then((p) => !ignore && setAuthorBio(p.bio ?? "")).catch(() => {});
         loadRelated(data).then((r) => !ignore && setRelated(r)).catch(() => {});
       })

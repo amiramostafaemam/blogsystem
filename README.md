@@ -21,11 +21,14 @@
 - Drag-and-drop cover uploads, resized in the browser and stored in Supabase Storage
 - Up to 5 tags per story, with suggestions from popular tags
 - Dashboard with published / draft tabs and like and response counts
+- **Stats page**: views, likes and responses per day with period-over-period deltas, accessible hand-built SVG charts (keyboard and table view), and top stories
 
 **Community**
 - **Likes** with optimistic UI (instant feedback, rolls back on failure)
 - **Responses** that appear live through Supabase Realtime; post authors can moderate
 - Private **bookmarks** for reading later
+- **Notifications** bell with a live unread count when someone likes or responds to your story
+- Sign in with **Google or GitHub** (OAuth), or email and password
 
 **Quality**
 - Security enforced in the database with **row-level security**: anyone can read, only owners can write, drafts and bookmarks stay private
@@ -51,6 +54,8 @@
 3. In **SQL Editor**, run the files in [`supabase/`](supabase) in order:
    - `001_schema.sql`: profiles, posts, RLS, storage buckets
    - `002_social_features.sql`: drafts, tags, search, comments, likes, bookmarks
+   - `003_notifications_stats.sql`: notifications, story views, writer stats, OAuth profiles
+   - `demo_activity.sql` (optional, after `npm run seed:demo`): realistic history for the demo accounts
 4. In **Authentication → Users**, add the demo user `demo@crema.app` / `crema-demo` (auto-confirm).
 
 ### 2. Run the app

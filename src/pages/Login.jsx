@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import AuthLayout from "../components/AuthLayout";
 import PasswordField from "../components/PasswordField";
 import PageMeta from "../components/PageMeta";
+import SocialLogin from "../components/SocialLogin";
 import { useDemoLogin } from "../hooks/useDemoLogin";
 
 function Login() {
@@ -46,6 +47,7 @@ function Login() {
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Stack spacing={2}>
           {error && <Alert severity="error">{error}</Alert>}
+          <SocialLogin redirectTo={location.state?.from?.pathname ?? "/explore"} />
           <TextField
             label="Email"
             name="email"

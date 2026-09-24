@@ -37,6 +37,11 @@ export function buildTheme(mode) {
         secondary: isDark ? "#B8A9A2" : "#6B5A55",
       },
       divider: isDark ? "rgba(243,236,230,0.12)" : "rgba(62,39,35,0.12)",
+      // Chart series, validated for lightness, chroma, colour-blind separation
+      // and contrast against the paper surface of each mode
+      chart: isDark
+        ? { first: "#D96A4E", second: "#1A9CBD", grid: "rgba(243,236,230,0.10)" }
+        : { first: "#B5472F", second: "#00809D", grid: "rgba(62,39,35,0.10)" },
     },
     shape: { borderRadius: 12 },
     typography: {
