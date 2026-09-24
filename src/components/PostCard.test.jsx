@@ -44,7 +44,7 @@ describe("PostCard", () => {
 
   it("renders tags and reaction counts", () => {
     renderCard();
-    expect(screen.getByText("#travel")).toBeInTheDocument();
+    expect(screen.getByText(/#travel/)).toHaveTextContent("#travel · #slow-living");
     expect(screen.getByRole("button", { name: "Like" })).toHaveTextContent("12");
     expect(screen.getByLabelText("3 comments")).toBeInTheDocument();
   });

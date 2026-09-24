@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Skeleton, Stack } from "@mui/material";
+import { Box, Skeleton, Stack } from "@mui/material";
 import PostCard from "./PostCard";
 import { usePostReactions } from "../hooks/usePostReactions";
 
@@ -12,21 +12,22 @@ export function PostGridSkeleton({ count = 4 }) {
   return (
     <Box sx={gridSx}>
       {Array.from({ length: count }, (_, i) => (
-        <Card key={i}>
-          <Skeleton variant="rectangular" sx={{ aspectRatio: "16 / 9", height: "auto" }} />
-          <CardContent>
+        <Box key={i} sx={{ p: 1.25, borderRadius: "20px", border: 1, borderColor: "divider", bgcolor: "background.paper" }}>
+          <Skeleton variant="rounded" sx={{ aspectRatio: "16 / 10", height: "auto", borderRadius: "14px" }} />
+          <Box sx={{ px: 1.25, pt: 2, pb: 1.5 }}>
+            <Skeleton width="30%" />
             <Skeleton variant="text" sx={{ fontSize: "1.5rem" }} />
             <Skeleton />
             <Skeleton width="80%" />
-            <Stack direction="row" spacing={1.5} mt={2} alignItems="center">
-              <Skeleton variant="circular" width={32} height={32} />
-              <Box flexGrow={1}>
-                <Skeleton width="40%" />
-                <Skeleton width="30%" />
-              </Box>
-            </Stack>
-          </CardContent>
-        </Card>
+          </Box>
+          <Stack direction="row" spacing={1.25} alignItems="center" sx={{ mx: 1.25, pt: 1.25, borderTop: 1, borderColor: "divider" }}>
+            <Skeleton variant="circular" width={30} height={30} />
+            <Box flexGrow={1}>
+              <Skeleton width="40%" />
+              <Skeleton width="30%" />
+            </Box>
+          </Stack>
+        </Box>
       ))}
     </Box>
   );

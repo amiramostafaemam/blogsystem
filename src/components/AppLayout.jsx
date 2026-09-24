@@ -4,29 +4,32 @@ import { Box, Drawer, Toolbar } from "@mui/material";
 import Navbar from "./Navbar";
 import Sidebar, { SIDEBAR_WIDTH } from "./Sidebar";
 
+const paperSx = {
+  width: SIDEBAR_WIDTH,
+  bgcolor: "background.default",
+  backgroundImage: "none",
+  borderRight: 1,
+  borderColor: "divider",
+};
+
 function AppLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeMobile = () => setMobileOpen(false);
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "background.default" }}>
       <Navbar onMenuClick={() => setMobileOpen((prev) => !prev)} />
 
-      <Box
-        component="nav"
-        sx={{ width: { md: SIDEBAR_WIDTH }, flexShrink: { md: 0 } }}
-      >
+      <Box component="nav" sx={{ width: { md: SIDEBAR_WIDTH }, flexShrink: { md: 0 } }}>
         {/* Mobile */}
         <Drawer
           variant="temporary"
           open={mobileOpen}
           onClose={closeMobile}
           ModalProps={{ keepMounted: true }}
-          sx={{
-            display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": { width: SIDEBAR_WIDTH },
-          }}
+          sx={{ display: { xs: "block", md: "none" }, "& .MuiDrawer-paper": paperSx }}
         >
+          <Toolbar />
           <Sidebar onNavigate={closeMobile} />
         </Drawer>
 
@@ -34,10 +37,7 @@ function AppLayout() {
         <Drawer
           variant="permanent"
           open
-          sx={{
-            display: { xs: "none", md: "block" },
-            "& .MuiDrawer-paper": { width: SIDEBAR_WIDTH, borderRight: 1, borderColor: "divider" },
-          }}
+          sx={{ display: { xs: "none", md: "block" }, "& .MuiDrawer-paper": paperSx }}
         >
           <Toolbar />
           <Sidebar />
