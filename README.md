@@ -2,10 +2,26 @@
 
 **A calm place to write, read and share stories.** Crema is a full-stack blogging platform built with React and Supabase. Writers draft in a markdown editor, publish with cover images and tags, and readers like, bookmark and respond in real time.
 
-<!-- Live demo: https://your-app.vercel.app -->
-<!-- Screenshots: docs/landing.png, docs/post.png, docs/editor.png -->
+### 🔗 Live demo: [blogsystem-crema.vercel.app](https://blogsystem-crema.vercel.app)
 
 > **Try it without signing up:** click **"Try the live demo"** on the landing page, or log in with `demo@crema.app` / `crema-demo`.
+
+![Crema landing page](docs/landing-light.png)
+
+| Explore feed | Story page |
+|---|---|
+| ![Explore feed with search, topics and spotlight cards](docs/explore.png) | ![A story with cover image, tags and reactions](docs/story.png) |
+
+| Markdown editor | Writer stats |
+|---|---|
+| ![Editor with live markdown preview](docs/editor.png) | ![Stats page with views chart in dark mode](docs/stats.png) |
+
+<details>
+<summary>Landing page in dark mode</summary>
+
+![Landing page in dark mode](docs/landing-dark.png)
+
+</details>
 
 ## Features
 
