@@ -39,7 +39,7 @@ function TimeSeriesChart({ data, series, height = 240, ariaLabel }) {
     const innerW = Math.max(0, width - MARGIN.left - MARGIN.right);
     const innerH = height - MARGIN.top - MARGIN.bottom;
     const max = Math.max(0, ...data.flatMap((d) => series.map((s) => d[s.key])));
-    const ticks = niceTicks(max);
+    const ticks = niceTicks(max, { integer: true });
     const top = ticks[ticks.length - 1];
     const x = (i) => MARGIN.left + (data.length <= 1 ? innerW / 2 : (i / (data.length - 1)) * innerW);
     const y = (v) => MARGIN.top + innerH - (v / top) * innerH;
@@ -55,9 +55,10 @@ function TimeSeriesChart({ data, series, height = 240, ariaLabel }) {
   // ~5 date labels, always including the first and last day
   const xTickIdx = useMemo(() => {
     if (data.length <= 1) return [0];
-    const n = Math.min(5, data.length);
+    // fewer labels on narrow screens so dates never overlap
+    const n = Math.min(width < 520 ? 3 : 5, data.length);
     return [...new Set(Array.from({ length: n }, (_, i) => Math.round((i / (n - 1)) * (data.length - 1))))];
-  }, [data.length]);
+  }, [data.length, width]);
 
   // End labels only when they don't collide; otherwise the legend + tooltip carry identity
   const last = data.length - 1;

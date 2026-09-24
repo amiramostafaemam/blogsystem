@@ -44,7 +44,7 @@ function StatTile({ label, value, previous, days, loading }) {
       : `${change > 0 ? "+" : ""}${change}% vs previous ${days} days`;
 
   return (
-    <Paper variant="outlined" sx={{ p: 2.5, borderRadius: 4 }}>
+    <Paper variant="outlined" sx={{ p: 2.5, borderRadius: "16px" }}>
       <Typography variant="body2" color="text.secondary">
         {label}
       </Typography>
@@ -65,7 +65,7 @@ function StatTile({ label, value, previous, days, loading }) {
 
 function ChartCard({ title, subtitle, children }) {
   return (
-    <Paper variant="outlined" sx={{ p: { xs: 2, sm: 3 }, borderRadius: 4 }}>
+    <Paper variant="outlined" sx={{ p: { xs: 2, sm: 3 }, borderRadius: "16px" }}>
       <Typography variant="h6">{title}</Typography>
       <Typography variant="body2" color="text.secondary" mb={2}>
         {subtitle}
@@ -239,7 +239,14 @@ function Stats() {
                     {top.map((p) => (
                       <TableRow key={p.id} hover>
                         <TableCell sx={{ maxWidth: 420 }}>
-                          <MuiLink component={Link} to={`/posts/${p.id}`} color="text.primary" underline="hover" fontWeight={600} noWrap sx={{ display: "block" }}>
+                          <MuiLink
+                            component={Link}
+                            to={`/posts/${p.id}`}
+                            color="text.primary"
+                            underline="hover"
+                            fontWeight={600}
+                            sx={{ display: "block", whiteSpace: { xs: "normal", md: "nowrap" }, overflow: "hidden", textOverflow: "ellipsis" }}
+                          >
                             {p.title}
                           </MuiLink>
                         </TableCell>

@@ -15,6 +15,7 @@ const WritePost = lazy(() => import("./pages/WritePost"));
 const EditPost = lazy(() => import("./pages/EditPost"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Stats = lazy(() => import("./pages/Stats"));
+const Privacy = lazy(() => import("./pages/Privacy"));
 const Bookmarks = lazy(() => import("./pages/Bookmarks"));
 const Settings = lazy(() => import("./pages/Settings"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -39,6 +40,7 @@ function App() {
           <Route path="/explore" element={<Explore />} />
           <Route path="/posts/:id" element={<PostPage />} />
           <Route path="/u/:id" element={<ProfilePage />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/write" element={<WritePost />} />
             <Route path="/edit/:id" element={<EditPost />} />
