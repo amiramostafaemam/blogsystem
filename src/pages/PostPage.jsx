@@ -256,7 +256,7 @@ function PostPage() {
                 component="img"
                 src={post.image}
                 alt=""
-                sx={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", borderRadius: 4, mb: 5, display: "block" }}
+                sx={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", borderRadius: "16px", mb: 5, display: "block" }}
               />
             )}
 
@@ -264,7 +264,7 @@ function PostPage() {
 
             <Box sx={{ py: 0.5, mt: 5, mb: 5, borderTop: 1, borderBottom: 1, borderColor: "divider" }}>{actions}</Box>
 
-            <Paper variant="outlined" sx={{ p: 3, mb: 6, borderRadius: 4 }}>
+            <Paper variant="outlined" sx={{ p: 3, mb: 6, borderRadius: "16px" }}>
               <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ sm: "center" }}>
                 <Avatar src={post.author?.avatar_url} alt={post.author?.name} sx={{ width: 64, height: 64 }}>
                   {post.author?.name?.[0]?.toUpperCase()}

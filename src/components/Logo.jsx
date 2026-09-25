@@ -1,6 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import { brand } from "../theme";
+import wordmark from "../assets/wordmark.png";
+
+const WORDMARK_RATIO = 940 / 217;
 
 // Top view of a cup of espresso with a crema swirl
 export function LogoMark({ size = 32 }) {
@@ -28,12 +31,19 @@ function Logo({ to = "/", color = "inherit", size = 32 }) {
       sx={{ display: "inline-flex", alignItems: "center", gap: 1, color, textDecoration: "none" }}
     >
       <LogoMark size={size} />
-      <Typography
+      {/* The wordmark is an alpha mask so it takes the surrounding text color in any theme */}
+      <Box
         component="span"
-        sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700, fontSize: size * 0.75 }}
-      >
-        crema
-      </Typography>
+        aria-hidden="true"
+        sx={{
+          display: "block",
+          height: size * 0.72,
+          aspectRatio: WORDMARK_RATIO,
+          bgcolor: "currentColor",
+          mask: `url(${wordmark}) center / contain no-repeat`,
+          WebkitMask: `url(${wordmark}) center / contain no-repeat`,
+        }}
+      />
     </Box>
   );
 }

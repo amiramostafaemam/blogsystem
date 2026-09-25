@@ -68,7 +68,7 @@ function ProfilePage() {
     <Box sx={{ maxWidth: 1200, mx: "auto" }}>
       <PageMeta title={shown?.name} description={shown?.bio || undefined} />
 
-      <Paper variant="outlined" sx={{ p: { xs: 3, sm: 5 }, mb: 5, borderRadius: 5 }}>
+      <Paper variant="outlined" sx={{ p: { xs: 3, sm: 5 }, mb: 5, borderRadius: "20px" }}>
         <Stack direction={{ xs: "column", sm: "row" }} spacing={3} alignItems={{ xs: "center", sm: "flex-start" }} textAlign={{ xs: "center", sm: "left" }}>
           {shown ? (
             <Avatar src={shown.avatar_url} alt={shown.name} sx={{ width: 120, height: 120, fontSize: 48 }}>

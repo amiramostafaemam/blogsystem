@@ -28,7 +28,7 @@ export function CupIllustration({ size = 88 }) {
             sx={{
               width: 3,
               height: size * 0.28,
-              borderRadius: 3,
+              borderRadius: "14px",
               bgcolor: "text.secondary",
               opacity: 0,
               animation: `${steam} 2.4s ease-in-out ${delay}s infinite`,

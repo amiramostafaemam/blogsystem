@@ -184,7 +184,7 @@ function Stats() {
                 {showTable ? "Hide daily data" : "Show daily data as a table"}
               </Button>
               {showTable && (
-                <TableContainer component={Paper} variant="outlined" sx={{ mt: 1.5, borderRadius: 3, maxHeight: 360 }}>
+                <TableContainer component={Paper} variant="outlined" sx={{ mt: 1.5, borderRadius: "14px", maxHeight: 360 }}>
                   <Table size="small" stickyHeader>
                     <TableHead>
                       <TableRow>

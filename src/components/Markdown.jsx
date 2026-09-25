@@ -61,7 +61,7 @@ function Markdown({ children, dropCap = false, sx }) {
         "& pre": {
           p: 2.5,
           mb: 3,
-          borderRadius: 2,
+          borderRadius: "10px",
           overflowX: "auto",
           bgcolor: theme.palette.mode === "dark" ? "#0d0b0a" : "#2B1D1A",
           color: "#F3ECE6",
@@ -69,7 +69,7 @@ function Markdown({ children, dropCap = false, sx }) {
           lineHeight: 1.6,
           "& code": { p: 0, bgcolor: "transparent", fontSize: "inherit" },
         },
-        "& img": { maxWidth: "100%", borderRadius: 2, my: 1 },
+        "& img": { maxWidth: "100%", borderRadius: "10px", my: 1 },
         "& hr": { border: 0, textAlign: "center", my: 5, "&::before": { content: '"· · ·"', letterSpacing: "0.6em", color: "text.secondary" } },
         "& table": { width: "100%", borderCollapse: "collapse", mb: 3, fontSize: "0.95rem" },
         "& th, & td": { border: 1, borderColor: "divider", px: 1.5, py: 1, textAlign: "left" },

@@ -198,7 +198,7 @@ function TimeSeriesChart({ data, series, height = 240, ariaLabel }) {
               pointerEvents: "none",
               px: 1.5,
               py: 1,
-              borderRadius: 2,
+              borderRadius: "10px",
               bgcolor: "background.paper",
               border: 1,
               borderColor: "divider",

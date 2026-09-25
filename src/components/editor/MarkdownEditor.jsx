@@ -47,7 +47,7 @@ function MarkdownEditor({ value, onChange, error, helperText }) {
   };
 
   return (
-    <Box sx={{ border: 1, borderColor: error ? "error.main" : "divider", borderRadius: 3, overflow: "hidden", bgcolor: "background.paper" }}>
+    <Box sx={{ border: 1, borderColor: error ? "error.main" : "divider", borderRadius: "14px", overflow: "hidden", bgcolor: "background.paper" }}>
       <Stack direction="row" alignItems="center" sx={{ px: 1, borderBottom: 1, borderColor: "divider", flexWrap: "wrap" }}>
         <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ minHeight: 44, "& .MuiTab-root": { minHeight: 44, py: 0 } }}>
           <Tab value="write" label="Write" />
