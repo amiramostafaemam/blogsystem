@@ -19,10 +19,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import DarkModeIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeIcon from "@mui/icons-material/LightModeOutlined";
 import PersonIcon from "@mui/icons-material/PersonOutline";
-import DashboardIcon from "@mui/icons-material/SpaceDashboardOutlined";
-import BookmarkIcon from "@mui/icons-material/BookmarkBorder";
 import SettingsIcon from "@mui/icons-material/SettingsOutlined";
-import InsightsIcon from "@mui/icons-material/InsightsOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import EditIcon from "@mui/icons-material/EditOutlined";
 import { Link, useNavigate } from "react-router-dom";
@@ -31,16 +28,14 @@ import { useColorMode } from "../context/ColorModeContext";
 import Logo from "./Logo";
 import NotificationBell from "./NotificationBell";
 
+// Account only: navigation lives in the sidebar
 const MENU = [
   { label: "Your profile", to: (u) => `/u/${u.id}`, icon: <PersonIcon fontSize="small" /> },
-  { label: "My posts", to: () => "/dashboard", icon: <DashboardIcon fontSize="small" /> },
-  { label: "Stats", to: () => "/stats", icon: <InsightsIcon fontSize="small" /> },
-  { label: "Bookmarks", to: () => "/bookmarks", icon: <BookmarkIcon fontSize="small" /> },
   { label: "Settings", to: () => "/settings", icon: <SettingsIcon fontSize="small" /> },
 ];
 
 // Frosted top bar, same language as the landing page nav
-function Navbar({ onMenuClick }) {
+function Navbar({ onMenuClick, menuExpanded }) {
   const { user, signOut } = useAuth();
   const { mode, toggleColorMode } = useColorMode();
   const navigate = useNavigate();
@@ -74,8 +69,9 @@ function Navbar({ onMenuClick }) {
           color="inherit"
           edge="start"
           onClick={onMenuClick}
-          aria-label="Open navigation"
-          sx={{ mr: 0.5, display: { md: "none" } }}
+          aria-label="Toggle navigation"
+          aria-expanded={menuExpanded}
+          sx={{ mr: 0.5 }}
         >
           <MenuIcon />
         </IconButton>
