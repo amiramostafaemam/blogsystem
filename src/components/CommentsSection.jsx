@@ -112,7 +112,7 @@ function CommentsSection({ postId, postOwnerId, onCountChange }) {
           </Stack>
         </Box>
       ) : (
-        <Box sx={{ p: 3, mb: 4, borderRadius: 3, border: 1, borderColor: "divider", textAlign: "center" }}>
+        <Box sx={{ p: 3, mb: 4, borderRadius: "14px", border: 1, borderColor: "divider", textAlign: "center" }}>
           <Typography mb={1.5}>Join the conversation</Typography>
           <Button component={Link} to="/login" state={{ from: location }} variant="contained">
             Log in to respond

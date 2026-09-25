@@ -27,7 +27,7 @@ function DemoBanner() {
           Just looking around?
         </Typography>
         <Typography variant="caption" color="text.secondary">
-          Try Crema with a ready-made account.
+          Use a ready-made account.
         </Typography>
       </Box>
       <Button size="small" variant="contained" onClick={loginAsDemo} disabled={loading} sx={{ flexShrink: 0, borderRadius: 99 }}>

@@ -79,7 +79,7 @@ function Settings() {
         </Box>
       </Typography>
 
-      <Paper variant="outlined" sx={{ p: { xs: 3, sm: 4 }, borderRadius: 4 }}>
+      <Paper variant="outlined" sx={{ p: { xs: 3, sm: 4 }, borderRadius: "16px" }}>
         <Stack direction="row" spacing={3} alignItems="center" mb={4}>
           <Badge
             overlap="circular"

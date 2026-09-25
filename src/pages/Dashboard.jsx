@@ -29,7 +29,7 @@ import { formatDate, readingTime } from "../utils";
 
 function StatCard({ label, value }) {
   return (
-    <Paper variant="outlined" sx={{ p: 2.5, borderRadius: 4 }}>
+    <Paper variant="outlined" sx={{ p: 2.5, borderRadius: "16px" }}>
       <Typography variant="body2" color="text.secondary">
         {label}
       </Typography>
@@ -47,7 +47,7 @@ function PostRow({ post, onDelete }) {
       variant="outlined"
       sx={{
         p: 1.5,
-        borderRadius: 3,
+        borderRadius: "14px",
         display: "grid",
         gridTemplateColumns: { xs: "72px 1fr", sm: "120px 1fr auto" },
         gap: 2,
@@ -59,7 +59,7 @@ function PostRow({ post, onDelete }) {
         to={`/posts/${post.id}`}
         sx={{
           aspectRatio: "4 / 3",
-          borderRadius: 2,
+          borderRadius: "10px",
           overflow: "hidden",
           bgcolor: "action.hover",
           display: "grid",

@@ -61,7 +61,7 @@ function CoverUpload({ value, onChange }) {
 
   if (value) {
     return (
-      <Box sx={{ position: "relative", borderRadius: 3, overflow: "hidden" }} {...dropHandlers}>
+      <Box sx={{ position: "relative", borderRadius: "14px", overflow: "hidden" }} {...dropHandlers}>
         <Box component="img" src={value} alt="Cover" sx={{ width: "100%", aspectRatio: "21 / 9", objectFit: "cover", display: "block" }} />
         <Stack direction="row" spacing={1} sx={{ position: "absolute", top: 12, right: 12 }}>
           <Button size="small" variant="contained" color="secondary" onClick={() => inputRef.current.click()} disabled={uploading}>
@@ -87,7 +87,7 @@ function CoverUpload({ value, onChange }) {
         display: "grid",
         placeItems: "center",
         aspectRatio: { xs: "16 / 9", sm: "21 / 7" },
-        borderRadius: 3,
+        borderRadius: "14px",
         border: "2px dashed",
         borderColor: dragging ? "primary.main" : "divider",
         bgcolor: dragging ? alpha(theme.palette.primary.main, 0.06) : "transparent",

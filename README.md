@@ -4,7 +4,7 @@
 
 ### 🔗 Live demo: [blogsystem-crema.vercel.app](https://blogsystem-crema.vercel.app)
 
-> **Try it without signing up:** click **"Try the live demo"** on the landing page, or log in with `demo@crema.app` / `crema-demo`.
+> **Try it without signing up:** click **"Try the live demo"** on the landing page or **"Try demo"** on the login page, or log in with `demo@crema.app` / `crema-demo`.
 
 ![Crema landing page](docs/landing-light.png)
 
@@ -15,6 +15,10 @@
 | Markdown editor | Writer stats |
 |---|---|
 | ![Editor with live markdown preview](docs/editor.png) | ![Stats page with views chart in dark mode](docs/stats.png) |
+
+| Sign in | Dashboard with collapsed sidebar |
+|---|---|
+| ![Login with email first, then Google and GitHub](docs/login.png) | ![Dashboard in dark mode with the sidebar collapsed to icons](docs/dashboard-collapsed.png) |
 
 <details>
 <summary>Landing page in dark mode</summary>
@@ -48,6 +52,7 @@
 
 **Quality**
 - Security enforced in the database with **row-level security**: anyone can read, only owners can write, drafts and bookmarks stay private
+- Collapsible sidebar that shrinks to an icon rail and remembers your choice; a slide-out drawer on phones
 - Light and dark themes, responsive down to small phones, `prefers-reduced-motion` respected
 - Route-level code splitting and vendor chunks for fast loads
 - Unit and component tests with Vitest + Testing Library; GitHub Actions runs lint, tests and build on every push
@@ -106,12 +111,14 @@ npm run dev
 
 ```
 src/
-  api/          # Supabase queries: posts, social (likes, comments, bookmarks), profiles
+  api/          # Supabase queries: posts, social, profiles, notifications, stats
   components/   # layout, cards, reactions, comments, markdown
+    charts/     # hand-built SVG time-series chart
     editor/     # post editor, markdown toolbar, cover upload, tag input
     landing/    # landing page sections
-  context/      # auth, color mode, notifications
-  hooks/        # infinite posts, reactions, in-view animations, demo login
+    reactbits/  # adapted React Bits effects
+  context/      # auth, color mode, toasts
+  hooks/        # infinite posts, reactions, in-view animations, demo login, auth guard
   pages/        # one file per route (lazy-loaded)
   lib/          # Supabase client
 supabase/       # SQL migrations
